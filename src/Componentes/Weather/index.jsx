@@ -1,10 +1,28 @@
 import styled from "styled-components";
 import coat from "../../assets/coat.png";
 import { dateAtcual } from "./dateComplete.js";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Weather() {
   const date = dateAtcual();
-  
+  const [weather, setWeather] = useState();
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?q=Sao%20Paulo&units=metric&appid=${
+          import.meta.env.VITE_API_KEY
+        }`
+      )
+
+      .then((res) => {
+        setWeather(res.data);
+        console.log(res.data.weather.map(p => p.icon))
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <Container>
       <div className="title">
@@ -16,7 +34,7 @@ export default function Weather() {
 
       <div className="temperature">
         <ion-icon name="ellipse"></ion-icon>
-        <h1>23°C</h1>
+        <h1>{parseInt(weather?.main.temp)}°C</h1>
         <h2>Céu aberto</h2>
       </div>
 
@@ -102,6 +120,15 @@ const Container = styled.div`
       height: 50px;
       color: #ec6e4c;
       margin-left: 100px;
+
+       /* snow =#eeeae9dd 
+          clear = #ec6e4c
+          rain = #273becdc
+          clouds = #9b9ca0dc
+          thunderStorm = #c047dfdc
+          drizzle = #4ea0ec7a
+          mist =#eeeae9dd 
+      */
     }
 
     h2 {

@@ -6,7 +6,7 @@ export default function TableOfTime() {
       <h1>Próximos dias</h1>
 
       <Table>
-        add
+        
       </Table>
     </Container>
   );

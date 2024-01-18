@@ -1,23 +1,23 @@
 import styled from "styled-components";
 
-export default function Informations() {
+export default function Informations({ tempMin, tempMax, humidity, wind }) {
   return (
     <Container>
       <CardInformation>
-        <h2>Minima</h2>
-        <h1>25°C</h1>
+        <h2>Mínima</h2>
+        <h1>{parseInt(tempMin)}°C</h1>
       </CardInformation>
       <CardInformation>
-        <h2>Minima</h2>
-        <h1>25°C</h1>
+        <h2>Máxima</h2>
+        <h1>{parseInt(tempMax)}°C</h1>
       </CardInformation>
       <CardInformation>
-        <h2>Minima</h2>
-        <h1>25°C</h1>
+        <h2>Umidade</h2>
+        <h1>{humidity}%</h1>
       </CardInformation>
       <CardInformation>
-        <h2>Minima</h2>
-        <h1>25°C</h1>
+        <h2>Vento</h2>
+        <h1>{parseInt(wind)}m/s</h1>
       </CardInformation>
 
       <p>Não, voce não deve levar o casaquinho</p>

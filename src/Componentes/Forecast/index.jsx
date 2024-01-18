@@ -1,19 +1,54 @@
 import styled from "styled-components";
 import Informations from "./Informations.jsx";
 import TableOfTime from "./TableOfTime.jsx";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Forecast() {
+  const [forecast, setForecast] = useState();
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?q=Sao%20Paulo&units=metric&appid=${
+          import.meta.env.VITE_API_KEY
+        }`
+      )
+
+      .then((res) => {
+        setForecast(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  function verifyIfUseCoat(tempActual){
+
+    if(tempActual <= 17) return "Você deve levar um casaquinho 🧥!"
+  
+  }
+
   return (
     <Container>
       <div className="menu">
         <div className="city">
-          <h2 /*font-size={17}*/>Previsão do tempo para...</h2>
-          <h1 /*font-size={50}*/>São Paulo</h1>
-          <h3 /*font-size={15}*/>Latitude: 44.4°</h3>
-          <h3 /*font-size={15}*/>Longitude: 10.99°</h3>
+          <h2 style={{ fontSize: "17px" }}>Previsão do tempo para...</h2>
+          <h1 style={{ fontSize: "50px" }}>{forecast?.name}</h1>
+          <div className="latlong">
+            <h3 style={{ fontSize: "15px" }}>
+              Latitude: {(forecast?.coord.lat)}°
+            </h3>
+            <h3 style={{ fontSize: "15px" }}>
+              Longitude: {(forecast?.coord.lon)}°
+            </h3>
+          </div>
         </div>
 
-        <Informations />
+        <Informations
+          tempMin={forecast?.main.temp_min}
+          tempMax={forecast?.main.temp_max}
+          humidity={forecast?.main.humidity}
+          wind={forecast?.wind.speed}
+        />
 
         <TableOfTime />
       </div>
@@ -37,12 +72,20 @@ const Container = styled.div`
   .city {
     h1,
     h2,
-    h2 {
+    h3 {
       font-family: "Poppins", sans-serif;
       font-weight: 400;
       line-height: 48px;
       letter-spacing: 0em;
       text-align: left;
+    }
+
+    .latlong {
+      display: flex;
+
+      h3 {
+        margin-right: 20px;
+      }
     }
   }
 `;
