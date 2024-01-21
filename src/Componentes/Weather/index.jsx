@@ -3,25 +3,43 @@ import coat from "../../assets/coat.png";
 import { dateAtcual } from "./dateComplete.js";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import climateOfWeather from "./climateOfWeather.js";
 
-export default function Weather() {
+export default function Weather({ weather, setWeather, setTableForecast }) {
+
+  
   const date = dateAtcual();
-  const [weather, setWeather] = useState();
+  const [searchCity, setSearchCity] = useState({ city: "" });
+  const infomationWeather = climateOfWeather(
+    weather?.weather.map((w) => w.main)
+  );
 
-  useEffect(() => {
+  function search(e) {
+    e.preventDefault();
+
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=Sao%20Paulo&units=metric&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `https://api.openweathermap.org/data/2.5/weather?q=${
+          searchCity.city
+        }&units=metric&appid=${import.meta.env.VITE_API_KEY}`
       )
-
       .then((res) => {
         setWeather(res.data);
-        console.log(res.data.weather.map(p => p.icon))
       })
       .catch((err) => console.log(err));
-  }, []);
+
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${
+          searchCity.city
+        }&units=metric&appid=${import.meta.env.VITE_API_KEY}`
+      )
+      .then((res) => {
+        setTableForecast(res.data.list);
+        
+      })
+      .catch((err) => console.log(err));
+  }
 
   return (
     <Container>
@@ -30,12 +48,26 @@ export default function Weather() {
         <h1>Levo um casaquinho?</h1>
       </div>
 
-      <input type="text" placeholder="  🔍  Procure por uma cidade" />
+      <form onSubmit={search}>
+        <input
+          type="text"
+          placeholder="  🔍  Procure por uma cidade"
+          value={searchCity.city}
+          onChange={(e) =>
+            setSearchCity({ ...searchCity, city: e.target.value })
+          }
+        />
+      </form>
 
       <div className="temperature">
-        <ion-icon name="ellipse"></ion-icon>
-        <h1>{parseInt(weather?.main.temp)}°C</h1>
-        <h2>Céu aberto</h2>
+        <ion-icon
+          name="ellipse"
+          style={{ color: infomationWeather.color }}
+        ></ion-icon>
+        <h1 style={{ color: infomationWeather.color }}>
+          {parseInt(weather?.main.temp)}°C
+        </h1>
+        <h2>{infomationWeather.textClimate}</h2>
       </div>
 
       <div className="line"></div>
@@ -85,6 +117,7 @@ const Container = styled.div`
     }
   }
 
+  form,
   input {
     width: 350px;
     height: 50px;
@@ -112,23 +145,11 @@ const Container = styled.div`
       letter-spacing: 0em;
       text-align: left;
       margin: 0px 15px;
-
-      color: #ec6e4c;
     }
     ion-icon {
       width: 50px;
       height: 50px;
-      color: #ec6e4c;
       margin-left: 100px;
-
-       /* snow =#eeeae9dd 
-          clear = #ec6e4c
-          rain = #273becdc
-          clouds = #9b9ca0dc
-          thunderStorm = #c047dfdc
-          drizzle = #4ea0ec7a
-          mist =#eeeae9dd 
-      */
     }
 
     h2 {

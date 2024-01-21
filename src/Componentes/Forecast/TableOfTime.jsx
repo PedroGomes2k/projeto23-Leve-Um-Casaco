@@ -1,12 +1,50 @@
 import styled from "styled-components";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+import axios from "axios";
+import { dateSubtitle } from "./dateForTable";
 
-export default function TableOfTime() {
+export default function TableOfTime({ tableForecast }) {
+  const data = [];
+
+  for (let i = 0; i < tableForecast?.length; i++) {
+    let temp = parseFloat(tableForecast[i].main.temp);
+    const day = dateSubtitle(tableForecast[i].dt_txt);
+
+    const novoObjeto = { day: day, temp: temp };
+
+    data.push(novoObjeto);
+  }
+
   return (
     <Container>
       <h1>Próximos dias</h1>
 
       <Table>
-        
+        <LineChart
+          width={720}
+          height={290}
+          data={data}
+          margin={{
+            top: 30,
+            right: 15,
+            left: -10,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid strokeDasharray="1 0" />
+          <XAxis dataKey="day" />
+          <YAxis />
+          <Tooltip />
+
+          <Line type="monotone" dataKey="temp" stroke=" #4d4494" />
+        </LineChart>
       </Table>
     </Container>
   );

@@ -4,27 +4,10 @@ import TableOfTime from "./TableOfTime.jsx";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Forecast() {
-  const [forecast, setForecast] = useState();
-
-  useEffect(() => {
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=Sao%20Paulo&units=metric&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
-      )
-
-      .then((res) => {
-        setForecast(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  function verifyIfUseCoat(tempActual){
-
-    if(tempActual <= 17) return "Você deve levar um casaquinho 🧥!"
-  
+export default function Forecast({ forecast, tableForecast }) {
+  function verifyIfUseCoat(tempActual) {
+    if (tempActual <= 17) return "Você deve levar um casaquinho 🧥!";
+    if (tempActual > 17) return "Não, voce não deve levar o casaquinho";
   }
 
   return (
@@ -35,10 +18,10 @@ export default function Forecast() {
           <h1 style={{ fontSize: "50px" }}>{forecast?.name}</h1>
           <div className="latlong">
             <h3 style={{ fontSize: "15px" }}>
-              Latitude: {(forecast?.coord.lat)}°
+              Latitude: {parseFloat(forecast?.coord.lat).toFixed(2)}°
             </h3>
             <h3 style={{ fontSize: "15px" }}>
-              Longitude: {(forecast?.coord.lon)}°
+              Longitude: {parseFloat(forecast?.coord.lon).toFixed(2)}°
             </h3>
           </div>
         </div>
@@ -48,9 +31,10 @@ export default function Forecast() {
           tempMax={forecast?.main.temp_max}
           humidity={forecast?.main.humidity}
           wind={forecast?.wind.speed}
+          coat={verifyIfUseCoat(forecast?.main.temp)}
         />
 
-        <TableOfTime />
+        <TableOfTime tableForecast={tableForecast} />
       </div>
     </Container>
   );

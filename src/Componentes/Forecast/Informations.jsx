@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-export default function Informations({ tempMin, tempMax, humidity, wind }) {
+export default function Informations({
+  tempMin,
+  tempMax,
+  humidity,
+  wind,
+  coat,
+}) {
   return (
     <Container>
       <CardInformation>
@@ -20,7 +26,7 @@ export default function Informations({ tempMin, tempMax, humidity, wind }) {
         <h1>{parseInt(wind)}m/s</h1>
       </CardInformation>
 
-      <p>Não, voce não deve levar o casaquinho</p>
+      <p>{coat}</p>
     </Container>
   );
 }
