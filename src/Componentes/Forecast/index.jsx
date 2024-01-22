@@ -41,7 +41,7 @@ export default function Forecast({ forecast, tableForecast }) {
 }
 
 const Container = styled.div`
-  width: 1258px;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;

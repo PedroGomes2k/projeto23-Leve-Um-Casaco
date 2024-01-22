@@ -7,6 +7,7 @@ import axios from "axios";
 function App() {
   const [weatherCity, setWeatherCity] = useState();
   const [tableForecast, setTableForecast] = useState();
+
   useEffect(() => {
     axios
       .get(
@@ -45,7 +46,7 @@ function App() {
 
 const Container = styled.div`
   width: 100%;
-  height: 665px;
+  height: 800px;
 
   display: flex;
 `;

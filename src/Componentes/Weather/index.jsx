@@ -4,12 +4,15 @@ import { dateAtcual } from "./dateComplete.js";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import climateOfWeather from "./climateOfWeather.js";
+import Swal from "sweetalert2";
+import CitiesExemple from "./CitiesExemple.jsx";
+import { getForeCast, getWather } from "./findCity.js";
 
 export default function Weather({ weather, setWeather, setTableForecast }) {
-
-  
   const date = dateAtcual();
+
   const [searchCity, setSearchCity] = useState({ city: "" });
+  const [choseCity, setChoseCity] = useState();
   const infomationWeather = climateOfWeather(
     weather?.weather.map((w) => w.main)
   );
@@ -17,28 +20,8 @@ export default function Weather({ weather, setWeather, setTableForecast }) {
   function search(e) {
     e.preventDefault();
 
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${
-          searchCity.city
-        }&units=metric&appid=${import.meta.env.VITE_API_KEY}`
-      )
-      .then((res) => {
-        setWeather(res.data);
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${
-          searchCity.city
-        }&units=metric&appid=${import.meta.env.VITE_API_KEY}`
-      )
-      .then((res) => {
-        setTableForecast(res.data.list);
-        
-      })
-      .catch((err) => console.log(err));
+    getWather(searchCity.city || choseCity, setWeather);
+    getForeCast(searchCity.city || choseCity, setTableForecast);
   }
 
   return (
@@ -47,6 +30,8 @@ export default function Weather({ weather, setWeather, setTableForecast }) {
         <img src={coat} alt="This is a photo of a coat" />
         <h1>Levo um casaquinho?</h1>
       </div>
+
+      <CitiesExemple setChoseCity={setChoseCity} search={search} />
 
       <form onSubmit={search}>
         <input
@@ -129,6 +114,8 @@ const Container = styled.div`
     border: 1px solid #ededef;
     border-radius: 24px;
     box-shadow: 0px 24px 48px 0px #314f7c14;
+
+    left: 152px;
   }
 
   .temperature {

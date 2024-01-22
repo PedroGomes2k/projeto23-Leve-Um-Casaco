@@ -34,7 +34,7 @@ export default function TableOfTime({ tableForecast }) {
           margin={{
             top: 30,
             right: 15,
-            left: -10,
+            left: -20,
             bottom: 0,
           }}
         >
@@ -43,7 +43,7 @@ export default function TableOfTime({ tableForecast }) {
           <YAxis />
           <Tooltip />
 
-          <Line type="monotone" dataKey="temp" stroke=" #4d4494" />
+          <Line type="monotone"  dataKey="temp" stroke=" #4d4494"  activeDot={{ r:6 }}/>
         </LineChart>
       </Table>
     </Container>

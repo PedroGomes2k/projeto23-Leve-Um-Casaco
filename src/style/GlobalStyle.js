@@ -4,6 +4,7 @@ const GlobalStyle = createGlobalStyle`
 
     body{
         
+        
     }
 `;
 export default GlobalStyle;
