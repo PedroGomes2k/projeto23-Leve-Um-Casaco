@@ -17,6 +17,7 @@ export default function Weather({ weather, setWeather, setTableForecast }) {
   const infomationWeather = climateOfWeather(
     weather?.weather.map((w) => w.main)
   );
+  
 
   function search(e) {
     e.preventDefault();
