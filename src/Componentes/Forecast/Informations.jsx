@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { Context } from "../../Contex/Contex";
 
 export default function Informations({
   tempMin,
@@ -7,37 +9,47 @@ export default function Informations({
   wind,
   coat,
 }) {
-  return (
-    <Container>
-      <CardInformation>
-        <h2>Mínima</h2>
-        <h1>{parseInt(tempMin)}°C</h1>
-      </CardInformation>
-      <CardInformation>
-        <h2>Máxima</h2>
-        <h1>{parseInt(tempMax)}°C</h1>
-      </CardInformation>
-      <CardInformation>
-        <h2>Umidade</h2>
-        <h1>{humidity}%</h1>
-      </CardInformation>
-      <CardInformation>
-        <h2>Vento</h2>
-        <h1>{parseInt(wind)}m/s</h1>
-      </CardInformation>
+  const { changeColor } = useContext(Context);
 
+  function modeColor() {
+    if (changeColor === "light")
+      return "linear-gradient(117.33deg, #4d4494 22.83%, #4f43ae 90.03%)";
+    if (changeColor === "dark")
+      return "linear-gradient(117.33deg, #696775 22.83%, #252529 90.03%)";
+  }
+
+  return (
+    <Container status={changeColor}>
+      <div className="containerCards">
+        <CardInformation style={{ background: modeColor() }}>
+          <h2>Mínima</h2>
+          <h1>{parseInt(tempMin)}°C</h1>
+        </CardInformation>
+        <CardInformation style={{ background: modeColor() }}>
+          <h2>Máxima</h2>
+          <h1>{parseInt(tempMax)}°C</h1>
+        </CardInformation>
+        <CardInformation style={{ background: modeColor() }}>
+          <h2>Umidade</h2>
+          <h1>{humidity}%</h1>
+        </CardInformation>
+        <CardInformation style={{ background: modeColor() }}>
+          <h2>Vento</h2>
+          <h1>{parseInt(wind)}m/s</h1>
+        </CardInformation>
+      </div>
       <p>{coat}</p>
     </Container>
   );
 }
 const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  .containerCards {
+    display: flex;
+  }
 
   p {
-    margin-top: 15px;
-
-    font-family: Poppins;
+    margin-top: 10px;
+    font-family: "Poppins", sans-serif;
     font-size: 18px;
     font-style: italic;
     font-weight: 400;
@@ -81,5 +93,4 @@ const CardInformation = styled.div`
   }
 
   color: #ffffff;
-  background: linear-gradient(117.33deg, #4d4494 22.83%, #4f43ae 90.03%);
 `;

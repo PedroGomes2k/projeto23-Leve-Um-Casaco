@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Weather from "./Componentes/Weather/index.jsx";
 import Forecast from "./Componentes/Forecast/index.jsx";
 import axios from "axios";
+import { ContexProvider } from "./Contex/Contex.jsx";
 
 function App() {
   const [weatherCity, setWeatherCity] = useState();
@@ -17,6 +18,7 @@ function App() {
       )
       .then((res) => {
         setWeatherCity(res.data);
+        console.log(res);
       })
       .catch((err) => console.log(err));
 
@@ -33,19 +35,21 @@ function App() {
   }, []);
 
   return (
-    <Container>
-      <Weather
-        weather={weatherCity}
-        setWeather={setWeatherCity}
-        setTableForecast={setTableForecast}
-      />
-      <Forecast forecast={weatherCity} tableForecast={tableForecast} />
-    </Container>
+    <ContexProvider>
+      <Container>
+        <Weather
+          weather={weatherCity}
+          setWeather={setWeatherCity}
+          setTableForecast={setTableForecast}
+        />
+        <Forecast forecast={weatherCity} tableForecast={tableForecast} />
+      </Container>
+    </ContexProvider>
   );
 }
 
 const Container = styled.div`
-  width: 100%;
+  width: 1920px;
   height: 800px;
 
   display: flex;

@@ -1,18 +1,19 @@
 import styled from "styled-components";
 import coat from "../../assets/coat.png";
 import { dateAtcual } from "./dateComplete.js";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useState } from "react";
 import climateOfWeather from "./climateOfWeather.js";
-import Swal from "sweetalert2";
 import CitiesExemple from "./CitiesExemple.jsx";
 import { getForeCast, getWather } from "./findCity.js";
+import { Context } from "../../Contex/Contex.jsx";
 
 export default function Weather({ weather, setWeather, setTableForecast }) {
   const date = dateAtcual();
 
   const [searchCity, setSearchCity] = useState({ city: "" });
   const [choseCity, setChoseCity] = useState();
+
+  const { changeColor } = useContext(Context);
   const infomationWeather = climateOfWeather(
     weather?.weather.map((w) => w.main)
   );
@@ -22,12 +23,14 @@ export default function Weather({ weather, setWeather, setTableForecast }) {
 
     getWather(searchCity.city || choseCity, setWeather);
     getForeCast(searchCity.city || choseCity, setTableForecast);
+
+    setSearchCity({ city: "" });
   }
 
   return (
-    <Container>
+    <Container status={changeColor}>
       <div className="title">
-        <img src={coat} alt="This is a photo of a coat" />
+        <img src={coat} alt="This is a photo of a coat blue" />
         <h1>Levo um casaquinho?</h1>
       </div>
 
@@ -72,8 +75,10 @@ const Container = styled.div`
   width: 608px;
   height: 100%;
 
-  background-color: #ffffff;
-  border: 1px solid #d8d8d8;
+  background-color: ${(props) =>
+    props.status === "light" ? "#FFFFFF" : "#e4e4e4"};
+  border: 1px solid
+    ${(props) => (props.status === "light" ? "#FFFFFF" : "#e4e4e4")};
 
   .title {
     display: flex;
@@ -81,7 +86,7 @@ const Container = styled.div`
     height: 96px;
 
     margin: 60px auto;
-
+    color: ${(props) => (props.status === "light" ? "#000000" : "#FFFFFF")};
     h1 {
       margin-left: 15px;
 
@@ -104,7 +109,7 @@ const Container = styled.div`
 
   form,
   input {
-    width: 350px;
+    width: 325px;
     height: 50px;
 
     margin: 0px auto;
@@ -118,10 +123,19 @@ const Container = styled.div`
     left: 152px;
   }
 
+  input {
+    padding-left: 25px;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0px 24px 48px 0px #314f7c14;
+    }
+  }
+
   .temperature {
     display: flex;
     flex-wrap: wrap;
-    margin: 0px auto;
+    justify-content: center;
     margin-top: 70px;
 
     h1 {
@@ -136,12 +150,13 @@ const Container = styled.div`
     ion-icon {
       width: 50px;
       height: 50px;
-      margin-left: 100px;
+      margin-left: 20px;
     }
 
     h2 {
       width: 200px;
-      margin: 35px auto;
+      margin-bottom: 35px;
+      margin-left: 45px;
       margin-top: 60px;
 
       font-family: Poppins;
@@ -155,8 +170,9 @@ const Container = styled.div`
 
   .line {
     width: 70%;
-    border: 3px solid #ededed;
-    border-radius: 5px;
+    border: 2px solid
+      ${(props) => (props.status === "light" ? "#ededed" : "#000000")};
+    border-radius: 8px;
 
     margin: 0px auto;
   }
@@ -168,14 +184,14 @@ const Container = styled.div`
     height: 60px;
     margin-top: 50px;
 
-    color: #222222;
-
     font-family: "Poppins", sans-serif;
     font-size: 20px;
     font-weight: 400;
     line-height: 48px;
     letter-spacing: 0em;
     text-align: center;
+
+    color: #000000;
 
     h2 {
       position: relative;
