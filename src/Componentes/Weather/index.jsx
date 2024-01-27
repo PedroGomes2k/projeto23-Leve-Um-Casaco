@@ -75,7 +75,7 @@ const Container = styled.div`
 
   width: 608px;
   height: 100%;
-
+  
   background-color: ${(props) =>
     props.status === "light" ? "#FFFFFF" : "#e4e4e4"};
   border: 1px solid
@@ -147,7 +147,9 @@ const Container = styled.div`
       letter-spacing: 0em;
       text-align: left;
       margin: 0px 15px;
+      margin-left: 30px;
     }
+
     ion-icon {
       width: 50px;
       height: 50px;

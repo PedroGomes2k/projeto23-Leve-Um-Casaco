@@ -1,3 +1,5 @@
+import { allDaysOfWeek } from "./daysWeek";
+
 export function dateAtcual() {
   const date = new Date();
 
@@ -10,15 +12,6 @@ export function dateAtcual() {
 
   const dateComplete = `${day} / ${month} / ${year}`;
 
-  const allDaysOfWeek = [
-    "Domingo",
-    "Segunda-feira",
-    "Terça-feira",
-    "Quarta-feira",
-    "Quinta-feira",
-    "Sexta-feira",
-    "Sábado",
-  ];
   const dayOfWeek = allDaysOfWeek[date.getDay()];
 
   return { dateComplete, dayOfWeek };

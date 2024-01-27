@@ -6,6 +6,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Label,
 } from "recharts";
 
 import { dateSubtitle } from "./dateForTable";
@@ -21,16 +22,19 @@ export default function TableOfTime({ tableForecast }) {
     let temp = parseFloat(tableForecast[i].main.temp);
     const day = dateSubtitle(tableForecast[i].dt_txt);
 
-    const novoObjeto = { day: day, temp: temp };
+    const novoObjeto = { day, temp };
 
     data.push(novoObjeto);
   }
+
+  const tempFormater = (value) => `${value} °C`;
 
   return (
     <Container status={changeColor}>
       <h1>Próximos dias</h1>
 
       <Table status={changeColor}>
+
         <LineChart
           width={720}
           height={290}
@@ -45,12 +49,12 @@ export default function TableOfTime({ tableForecast }) {
           <CartesianGrid strokeDasharray="1 0" />
           <XAxis dataKey="day" />
           <YAxis />
-          <Tooltip />
+          <Tooltip formatter={tempFormater} />
 
           <Line
             type="monotone"
             dataKey="temp"
-            stroke=" #4d4494"
+            stroke="#4d4494"
             activeDot={{ r: 6 }}
           />
         </LineChart>
@@ -69,7 +73,6 @@ const Container = styled.div`
     text-align: left;
 
     color: ${(props) => (props.status === "light" ? "#000000" : "#FFFFFF")};
-    //
   }
 `;
 

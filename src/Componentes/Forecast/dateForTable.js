@@ -11,6 +11,6 @@ export function dateSubtitle(date) {
   const dayOfWeek = allDaysOfWeek[objectDate.getDay()];
 
   const formatDate = `${day}/${month} (${dayOfWeek})`;
- 
+
   return formatDate;
 }
