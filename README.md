@@ -31,7 +31,7 @@ npm install
 
 3. Configurar Banco de Dados:
 
-- Configure o arquivo .env com as informações do seu banco de dados PostgreSQL, ultileze o .env.exemple como exemplo.
+- Configure o arquivo .env com as informações do seu banco de dados da sua key do site,  ultileze o .env.exemple como exemplo.
 
 4. Deploy da aplicação web
 
