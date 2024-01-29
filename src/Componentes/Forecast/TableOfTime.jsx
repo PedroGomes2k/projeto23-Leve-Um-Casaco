@@ -34,7 +34,6 @@ export default function TableOfTime({ tableForecast }) {
       <h1>Próximos dias</h1>
 
       <Table status={changeColor}>
-
         <LineChart
           width={720}
           height={290}
@@ -57,7 +56,7 @@ export default function TableOfTime({ tableForecast }) {
             stroke="#4d4494"
             activeDot={{ r: 6 }}
           />
-        </LineChart>
+        </LineChart>s
       </Table>
     </Container>
   );

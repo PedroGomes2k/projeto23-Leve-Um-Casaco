@@ -17,6 +17,7 @@ export default function Weather({ weather, setWeather, setTableForecast }) {
   const infomationWeather = climateOfWeather(
     weather?.weather.map((w) => w.main)
   );
+  console.log(infomationWeather)
   
 
   function search(e) {
@@ -159,7 +160,7 @@ const Container = styled.div`
     h2 {
       width: 200px;
       margin-bottom: 35px;
-      margin-left: 45px;
+      margin-left: 55px;
       margin-top: 60px;
 
       font-family: Poppins;
@@ -202,4 +203,4 @@ const Container = styled.div`
     }
   }
 `;
-//
+

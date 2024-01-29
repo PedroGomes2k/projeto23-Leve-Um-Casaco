@@ -1,4 +1,5 @@
 import axios from "axios";
+import { cantFindCity } from "../../erros/cantFindCity";
 
 export function getWather(searchCity, setWeather) {
   axios
@@ -10,18 +11,7 @@ export function getWather(searchCity, setWeather) {
     .then((res) => {
       setWeather(res.data);
     })
-    .catch(() =>
-      Swal.fire({
-        title: "Erro!",
-        text: "Cidade não encontrada. Por favor tente outra cidade !",
-        confirmButtonText: "Ok",
-        customClass: {
-          container: "custom-swal-container",
-          popup: "custom-swal-popup",
-          content: "custom-swal-content",
-        },
-      })
-    );
+    .catch(() => cantFindCity());
 }
 
 export function getForeCast(searchCity, setTableForecast) {
@@ -34,16 +24,5 @@ export function getForeCast(searchCity, setTableForecast) {
     .then((res) => {
       setTableForecast(res.data.list);
     })
-    .catch(() =>
-      Swal.fire({
-        title: "Erro!",
-        text: "Cidade não encontrada. Por favor tente outra cidade !",
-        confirmButtonText: "Ok",
-        customClass: {
-          container: "custom-swal-container",
-          popup: "custom-swal-popup",
-          content: "custom-swal-content",
-        },
-      })
-    );
+    .catch(() => cantFindCity());
 }
