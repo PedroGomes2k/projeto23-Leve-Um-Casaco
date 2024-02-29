@@ -1,4 +1,4 @@
-# Projeto de previsão do tempo ☀️
+# Projeto de Leve um Casaco ☀️
 
 Front-end para verificar a previsão do tempo!
 
