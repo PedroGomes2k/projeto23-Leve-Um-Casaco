@@ -1,62 +1,67 @@
 import styled from "styled-components";
-import PropTypes from "prop-types";
+import { useContext } from "react";
+import { Context } from "../../Contex/Contex.jsx";
 
-const cities = [
-  { id: 1, label: "SP", name: "Sao Paulo" },
-  { id: 2, label: "DF", name: "Brasilia" },
-  { id: 3, label: "BH", name: "Belo Horizonte" },
-  { id: 4, label: "RJ", name: "Rio de Janeiro" },
-];
+export default function CitiesExemple({ findCity }) {
+  const { changeColor } = useContext(Context);
 
-export default function CitiesExemple({ onSelectCity }) {
+  const cities = [
+    { id: 1, city: "SP" },
+    { id: 2, city: "DF" },
+    { id: 3, city: "BH" },
+    { id: 4, city: "RJ" },
+  ];
+
+  function choseCity(city) {
+    if (city === "SP") return findCity("Sao Paulo");
+    if (city === "DF") return findCity("Brasilia");
+    if (city === "BH") return findCity("Belo Horizonte");
+    if (city === "RJ") return findCity("Rio de Janeiro");
+  }
+
   return (
-    <Container>
+    <Container $status={changeColor}>
       {cities.map((ct) => (
-        <button key={ct.id} type="button" onClick={() => onSelectCity(ct.name)}>
-          {ct.label}
+        <button key={ct.id} type="button" onClick={() => choseCity(ct.city)}>
+          {ct.city}
         </button>
       ))}
     </Container>
   );
 }
 
-CitiesExemple.propTypes = {
-  onSelectCity: PropTypes.func.isRequired,
-};
-
 const Container = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-
   width: 400px;
   max-width: calc(100% - 32px);
   height: 50px;
 
   margin: 0px auto;
   margin-bottom: 40px;
+  display: flex;
+  justify-content: space-evenly;
 
   button {
     display: flex;
-    justify-content: center;
-    align-items: center;
-
     width: 80px;
     height: 40px;
 
     border-radius: 4px;
-    border: 1px solid ${({ theme }) => theme.surfaceBorder};
-    box-shadow: 0px 0px 8px 3px ${({ theme }) => theme.shadow};
+    border: 1px solid
+      ${(props) => (props.$status === "light" ? "#ededef" : "#475569")};
+    box-shadow: 0px 0px 8px 3px
+      ${(props) => (props.$status === "light" ? "#314f7c14" : "#00000059")};
+    justify-content: center;
+    align-items: center;
 
-    background-color: ${({ theme }) => theme.surface};
-    color: ${({ theme }) => theme.text};
+    background-color: ${(props) =>
+      props.$status === "light" ? "#ededef" : "#334155"};
+    color: ${(props) => (props.$status === "light" ? "#000000" : "#f1f5f9")};
 
     cursor: pointer;
-    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
 
-    &:hover,
-    &:focus-visible {
-      outline: none;
-      border-color: ${({ theme }) => theme.accent};
+    &:hover {
+      border-color: ${(props) =>
+        props.$status === "light" ? "#4d4494" : "#818cf8"};
     }
   }
 

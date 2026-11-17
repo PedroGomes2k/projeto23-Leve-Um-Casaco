@@ -1,36 +1,23 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-    html {
-        color-scheme: ${({ theme }) => theme.colorScheme};
-    }
 
-    body {
+    body{
         font-family: "Poppins", sans-serif;
-        background-color: ${({ theme }) => theme.pageBg};
     }
 
-    /* O ResetStyle zera margin/padding de h2 e div; devolve o espaçamento do SweetAlert */
-    .swal2-popup {
+    .swal2-popup{
         font-family: "Poppins", sans-serif;
-        background: ${({ theme }) => theme.panelBg};
-        color: ${({ theme }) => theme.text};
     }
 
-    .swal2-popup .swal2-title {
+    .swal2-popup .swal2-title{
         padding: 0.8em 1em 0;
         font-size: 1.875em;
         font-weight: 600;
-        color: ${({ theme }) => theme.text};
     }
 
-    .swal2-popup .swal2-html-container {
+    .swal2-popup .swal2-html-container{
         padding: 1em 1.6em 0.3em;
-        color: ${({ theme }) => theme.text};
-    }
-
-    .swal2-popup .swal2-styled.swal2-confirm {
-        background-color: ${({ theme }) => theme.buttonBg};
     }
 `;
 export default GlobalStyle;

@@ -1,28 +1,27 @@
-const allDaysOfWeek = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
-
-const pad = (n) => String(n).padStart(2, "0");
-
-// A OpenWeatherMap manda `dt` em segundos UTC e `city.timezone` como o
-// deslocamento da cidade em relação ao UTC (também em segundos). Somando os
-// dois e lendo com getUTC* obtemos a data/hora local da cidade pesquisada,
-// independente do fuso de quem está usando o site.
-function cityDate(dt, timezone) {
-  return new Date((dt + timezone) * 1000);
-}
-
-export function dayKey(dt, timezone) {
-  const d = cityDate(dt, timezone);
-  return `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()}`;
-}
-
 export function dateSubtitle(dt, timezone) {
-  const d = cityDate(dt, timezone);
-  const dayOfWeek = allDaysOfWeek[d.getUTCDay()];
+  const objectDate = new Date((dt + (timezone || 0)) * 1000);
 
-  return `${pad(d.getUTCDate())}/${pad(d.getUTCMonth() + 1)} (${dayOfWeek})`;
+  let day = objectDate.getUTCDate();
+  let month = objectDate.getUTCMonth() + 1;
+
+  day = day < 10 ? "0" + day : day;
+  month = month < 10 ? "0" + month : month;
+
+  const allDaysOfWeek = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+  const dayOfWeek = allDaysOfWeek[objectDate.getUTCDay()];
+
+  const formatDate = `${day}/${month} (${dayOfWeek})`;
+
+  return formatDate;
 }
 
 export function dateAndHour(dt, timezone) {
-  const d = cityDate(dt, timezone);
-  return `${dateSubtitle(dt, timezone)} às ${pad(d.getUTCHours())}h`;
+  const objectDate = new Date((dt + (timezone || 0)) * 1000);
+
+  let hour = objectDate.getUTCHours();
+  hour = hour < 10 ? "0" + hour : hour;
+
+  const formatDate = `${dateSubtitle(dt, timezone)} às ${hour}h`;
+
+  return formatDate;
 }

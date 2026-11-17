@@ -1,50 +1,53 @@
-import { useContext, useState } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import coat from "../../assets/coat.png";
 import { dateAtcual } from "./dateComplete.js";
+import { useContext, useState } from "react";
 import climateOfWeather from "./climateOfWeather.js";
 import CitiesExemple from "./CitiesExemple.jsx";
+import { getWeatherAndForecast } from "./findCity.js";
 import { Context } from "../../Contex/Contex.jsx";
-import { weatherShape } from "../shapes.js";
-import { formatTemp } from "../../utils/format.js";
 
-export default function Weather({ weather, onSearch }) {
+export default function Weather({ weather, setWeather, setTableForecast }) {
   const date = dateAtcual();
-  const [searchCity, setSearchCity] = useState("");
-  const { changeColor } = useContext(Context);
 
+  const [searchCity, setSearchCity] = useState({ city: "" });
+
+  const { changeColor } = useContext(Context);
   const infomationWeather = climateOfWeather(
-    weather?.weather?.[0]?.main,
+    weather?.weather.map((w) => w.main),
     changeColor
   );
+
+  function findCity(city) {
+    getWeatherAndForecast(city, setWeather, setTableForecast, changeColor);
+  }
 
   function search(e) {
     e.preventDefault();
 
-    const city = searchCity.trim();
-    if (!city) return;
+    if (searchCity.city.trim() === "") return;
 
-    onSearch(city);
-    setSearchCity("");
+    findCity(searchCity.city.trim());
+    setSearchCity({ city: "" });
   }
 
   return (
-    <Container>
+    <Container $status={changeColor}>
       <div className="title">
-        <img src={coat} alt="Casaco azul" />
+        <img src={coat} alt="This is a photo of a coat blue" />
         <h1>Levo um casaquinho?</h1>
       </div>
 
-      <CitiesExemple onSelectCity={onSearch} />
+      <CitiesExemple findCity={findCity} />
 
       <form onSubmit={search}>
         <input
           type="text"
           placeholder="  🔍  Procure por uma cidade"
-          aria-label="Procure por uma cidade"
-          value={searchCity}
-          onChange={(e) => setSearchCity(e.target.value)}
+          value={searchCity.city}
+          onChange={(e) =>
+            setSearchCity({ ...searchCity, city: e.target.value })
+          }
         />
       </form>
 
@@ -54,7 +57,7 @@ export default function Weather({ weather, onSearch }) {
           style={{ color: infomationWeather.color }}
         ></ion-icon>
         <h1 style={{ color: infomationWeather.color }}>
-          {formatTemp(weather?.main?.temp)}
+          {weather ? Math.round(weather.main.temp) : "--"}°C
         </h1>
         <h2>{infomationWeather.textClimate}</h2>
       </div>
@@ -69,11 +72,6 @@ export default function Weather({ weather, onSearch }) {
   );
 }
 
-Weather.propTypes = {
-  weather: weatherShape,
-  onSearch: PropTypes.func.isRequired,
-};
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -82,9 +80,9 @@ const Container = styled.div`
   width: 608px;
   padding-bottom: 40px;
 
-  background-color: ${({ theme }) => theme.panelBg};
-  color: ${({ theme }) => theme.text};
-  transition: background-color 0.3s, color 0.3s;
+  background-color: ${(props) =>
+    props.$status === "light" ? "#FFFFFF" : "#1e293b"};
+  color: ${(props) => (props.$status === "light" ? "#000000" : "#f1f5f9")};
 
   .title {
     display: flex;
@@ -117,6 +115,7 @@ const Container = styled.div`
   form {
     width: 325px;
     max-width: calc(100% - 32px);
+
     margin: 0px auto;
   }
 
@@ -124,23 +123,27 @@ const Container = styled.div`
     box-sizing: border-box;
     width: 100%;
     height: 50px;
+
     padding-left: 25px;
 
-    background: ${({ theme }) => theme.surface};
-    color: ${({ theme }) => theme.text};
+    background: ${(props) =>
+      props.$status === "light" ? "#ededef" : "#334155"};
+    color: ${(props) => (props.$status === "light" ? "#000000" : "#f1f5f9")};
 
-    border: 1px solid ${({ theme }) => theme.surfaceBorder};
+    border: 1px solid
+      ${(props) => (props.$status === "light" ? "#ededef" : "#475569")};
     border-radius: 24px;
-    box-shadow: 0px 24px 48px 0px ${({ theme }) => theme.shadow};
-    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+    box-shadow: 0px 24px 48px 0px
+      ${(props) => (props.$status === "light" ? "#314f7c14" : "#00000059")};
 
     &::placeholder {
-      color: ${({ theme }) => theme.placeholder};
+      color: ${(props) => (props.$status === "light" ? "#757575" : "#94a3b8")};
     }
 
     &:focus {
       outline: none;
-      border-color: ${({ theme }) => theme.accent};
+      border-color: ${(props) =>
+        props.$status === "light" ? "#4d4494" : "#818cf8"};
     }
   }
 
@@ -184,7 +187,8 @@ const Container = styled.div`
 
   .line {
     width: 70%;
-    border: 2px solid ${({ theme }) => theme.divider};
+    border: 2px solid
+      ${(props) => (props.$status === "light" ? "#ededed" : "#334155")};
     border-radius: 8px;
 
     margin: 0px auto;
