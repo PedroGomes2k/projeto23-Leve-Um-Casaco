@@ -31,7 +31,7 @@ Bem-vindo ao nosso projeto de previsão do tempo, onde você consegue verificar 
 git clone https://github.com/PedroGomes2k/projeto23-Leve-Um-Casaco.git
 ```
 
-2. Instale as dependências:
+2. Instale as dependências (requer Node.js 26):
 
 ```bash
 npm install
