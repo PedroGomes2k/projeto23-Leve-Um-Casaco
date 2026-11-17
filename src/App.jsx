@@ -1,58 +1,56 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Weather from "./Componentes/Weather/index.jsx";
 import Forecast from "./Componentes/Forecast/index.jsx";
-import axios from "axios";
 import { ContexProvider } from "./Contex/Contex.jsx";
+import { fetchCityWeather } from "./Componentes/Weather/findCity.js";
+import { showRequestError } from "./erros/cantFindCity.js";
+
+const INITIAL_CITY = "Manaus";
 
 function App() {
-  const [weatherCity, setWeatherCity] = useState();
-  const [tableForecast, setTableForecast] = useState();
+  const [weather, setWeather] = useState();
+  const [forecast, setForecast] = useState();
+  const lastRequest = useRef(0);
+
+  const searchCity = useCallback(async (city) => {
+    const requestId = ++lastRequest.current;
+
+    try {
+      const data = await fetchCityWeather(city);
+      // Ignora respostas antigas se o usuário já pediu outra cidade
+      if (requestId !== lastRequest.current) return;
+
+      setWeather(data.weather);
+      setForecast(data.forecast);
+    } catch (error) {
+      if (requestId !== lastRequest.current) return;
+      showRequestError(error);
+    }
+  }, []);
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=manaus&units=metric&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
-      )
-      .then((res) => {
-        setWeatherCity(res.data);
-      
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=manaus&units=metric&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
-      )
-      .then((res) => {
-        setTableForecast(res.data.list);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    searchCity(INITIAL_CITY);
+  }, [searchCity]);
 
   return (
     <ContexProvider>
       <Container>
-        <Weather
-          weather={weatherCity}
-          setWeather={setWeatherCity}
-          setTableForecast={setTableForecast}
-        />
-        <Forecast forecast={weatherCity} tableForecast={tableForecast} />
+        <Weather weather={weather} onSearch={searchCity} />
+        <Forecast weather={weather} forecast={forecast} />
       </Container>
     </ContexProvider>
   );
 }
 
 const Container = styled.div`
-  width: 1920px;
-  height: 800px;
-
   display: flex;
+  width: 100%;
+  min-height: 100vh;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
 `;
 
 export default App;

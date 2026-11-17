@@ -1,16 +1,13 @@
 import { timeColors } from "./colorsOfWaether";
 
-export default function climateOfWeather(climate) {
-  const color = [];
-  const textClimate = [];
+const DEFAULT_CLIMATE = { color: "#9b9ca0", textClimate: "" };
 
-  climate?.forEach((c) => {
-    const matchingColor = timeColors.find((tc) => tc.climate === c);
-    if (matchingColor) {
-      color.push(matchingColor.color);
-      textClimate.push(matchingColor.textClimate);
-    }
-  });
+// Recebe `weather[0].main` (ex.: "Clouds") e devolve a cor e o texto em português
+export default function climateOfWeather(main) {
+  if (!main) return DEFAULT_CLIMATE;
 
-  return { color: color[0], textClimate: textClimate[0] };
+  const match = timeColors.find((tc) => tc.climate === main);
+  if (!match) return { ...DEFAULT_CLIMATE, textClimate: main };
+
+  return { color: match.color, textClimate: match.textClimate };
 }
