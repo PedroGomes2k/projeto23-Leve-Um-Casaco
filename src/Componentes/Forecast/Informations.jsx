@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { Context } from "../../Contex/Contex";
+import { formatNumber, formatTemp } from "../../utils/format.js";
 
 export default function Informations({
   tempMin,
@@ -11,49 +13,53 @@ export default function Informations({
 }) {
   const { changeColor } = useContext(Context);
 
-  function modeColor() {
-    if (changeColor === "light")
-      return "linear-gradient(117.33deg, #4d4494 22.83%, #4f43ae 90.03%)";
-    if (changeColor === "dark")
-      return "linear-gradient(117.33deg, #696775 22.83%, #252529 90.03%)";
-  }
+  const cards = [
+    { title: "Mínima", value: formatTemp(tempMin) },
+    { title: "Máxima", value: formatTemp(tempMax) },
+    { title: "Umidade", value: formatNumber(humidity, { suffix: "%" }) },
+    { title: "Vento", value: formatNumber(wind, { suffix: "m/s" }) },
+  ];
 
   return (
-    <Container status={changeColor}>
+    <Container>
       <div className="containerCards">
-        <CardInformation style={{ background: modeColor() }}>
-          <h2>Mínima</h2>
-          <h1>{parseInt(tempMin)}°C</h1>
-        </CardInformation>
-        <CardInformation style={{ background: modeColor() }}>
-          <h2>Máxima</h2>
-          <h1>{parseInt(tempMax)}°C</h1>
-        </CardInformation>
-        <CardInformation style={{ background: modeColor() }}>
-          <h2>Umidade</h2>
-          <h1>{humidity}%</h1>
-        </CardInformation>
-        <CardInformation style={{ background: modeColor() }}>
-          <h2>Vento</h2>
-          <h1>{parseInt(wind)}m/s</h1>
-        </CardInformation>
+        {cards.map((card) => (
+          <CardInformation key={card.title} $status={changeColor}>
+            <h2>{card.title}</h2>
+            <h1>{card.value}</h1>
+          </CardInformation>
+        ))}
       </div>
       <p>{coat}</p>
     </Container>
   );
 }
+
+Informations.propTypes = {
+  tempMin: PropTypes.number,
+  tempMax: PropTypes.number,
+  humidity: PropTypes.number,
+  wind: PropTypes.number,
+  coat: PropTypes.string,
+};
+
 const Container = styled.div`
   .containerCards {
     display: flex;
+    flex-wrap: wrap;
+    gap: 0px 20px;
   }
 
   p {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
     margin-top: 10px;
     font-family: "Poppins", sans-serif;
     font-size: 18px;
     font-style: italic;
     font-weight: 400;
-    line-height: 48px;
+    line-height: 28px;
     letter-spacing: 0em;
     text-align: left;
 
@@ -62,15 +68,19 @@ const Container = styled.div`
 `;
 
 const CardInformation = styled.div`
-  width: 160px;
-  height: 80px;
-
-  margin-top: 25px;
-  margin-right: 20px;
-
-  border-radius: 20px;
   display: flex;
   flex-direction: column;
+
+  width: 160px;
+  height: 80px;
+  margin-top: 25px;
+
+  border-radius: 20px;
+  background: ${(props) =>
+    props.$status === "light"
+      ? "linear-gradient(117.33deg, #4d4494 22.83%, #4f43ae 90.03%)"
+      : "linear-gradient(117.33deg, #696775 22.83%, #252529 90.03%)"};
+  color: #ffffff;
 
   h1 {
     font-family: "Poppins", sans-serif;
@@ -91,6 +101,4 @@ const CardInformation = styled.div`
     letter-spacing: 0em;
     text-align: center;
   }
-
-  color: #ffffff;
 `;

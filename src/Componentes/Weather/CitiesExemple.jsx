@@ -1,56 +1,71 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import { Context } from "../../Contex/Contex.jsx";
 
-export default function CitiesExemple({ setChoseCity, search }) {
-  const cities = [
-    { id: 1, city: "SP" },
-    { id: 2, city: "DF" },
-    { id: 3, city: "BH" },
-    { id: 4, city: "RJ" },
-  ];
+const cities = [
+  { id: 1, label: "SP", name: "Sao Paulo" },
+  { id: 2, label: "DF", name: "Brasilia" },
+  { id: 3, label: "BH", name: "Belo Horizonte" },
+  { id: 4, label: "RJ", name: "Rio de Janeiro" },
+];
 
-  function choseCity(city) {
-    if (city === "SP") return setChoseCity("Sao Paulo");
-    if (city === "DF") return setChoseCity("Brasilia");
-    if (city === "BH") return setChoseCity("Belo Horizonte");
-    if (city === "RJ") return setChoseCity("Rio de Janeiro");
-  }
+export default function CitiesExemple({ onSelectCity }) {
+  const { changeColor } = useContext(Context);
 
   return (
-    <Container>
+    <Container $status={changeColor}>
       {cities.map((ct) => (
-        <form key={ct.id} onSubmit={search} className="test">
-          <button type="submit" onClick={() => choseCity(ct.city)}>
-            {ct.city}
-          </button>
-        </form>
+        <button
+          key={ct.id}
+          type="button"
+          onClick={() => onSelectCity(ct.name)}
+        >
+          {ct.label}
+        </button>
       ))}
     </Container>
   );
 }
 
+CitiesExemple.propTypes = {
+  onSelectCity: PropTypes.func.isRequired,
+};
+
 const Container = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+
   width: 400px;
+  max-width: calc(100% - 32px);
   height: 50px;
 
   margin: 0px auto;
   margin-bottom: 40px;
-  display: flex;
-  justify-content: space-evenly;
 
-  .test,
   button {
     display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 80px;
     height: 40px;
 
     border-radius: 4px;
-    border: 1px solid #ededef;
+    border: 1px solid
+      ${(props) => (props.$status === "light" ? "#ededef" : "#2a2a31")};
     box-shadow: 0px 0px 8px 3px #314f7c14;
-    justify-content: center;
-    align-items: center;
 
-    background-color: #ededef;
+    background-color: ${(props) =>
+      props.$status === "light" ? "#ededef" : "#2a2a31"};
+    color: ${(props) => (props.$status === "light" ? "#000000" : "#ffffff")};
 
     cursor: pointer;
+  }
+
+  @media (max-width: 480px) {
+    button {
+      width: 64px;
+    }
   }
 `;
