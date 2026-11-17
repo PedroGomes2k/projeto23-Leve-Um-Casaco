@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import {
   LineChart,
   Line,
@@ -9,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Context } from "../../Contex/Contex";
 import { forecastShape } from "../shapes.js";
 import { dateAndHour, dateSubtitle, dayKey } from "./dateForTable";
 
@@ -31,7 +29,7 @@ function dayTicks(data, timezone) {
 }
 
 export default function TableOfTime({ forecast }) {
-  const { changeColor } = useContext(Context);
+  const theme = useTheme();
 
   const timezone = forecast?.city?.timezone ?? 0;
   const data = (forecast?.list ?? []).map((item) => ({
@@ -40,10 +38,10 @@ export default function TableOfTime({ forecast }) {
   }));
 
   return (
-    <Container $status={changeColor}>
+    <Container>
       <h1>Próximos dias</h1>
 
-      <Table $status={changeColor}>
+      <Table>
         <ResponsiveContainer width="100%" height={290}>
           <LineChart
             data={data}
@@ -54,25 +52,37 @@ export default function TableOfTime({ forecast }) {
               bottom: 0,
             }}
           >
-            <CartesianGrid strokeDasharray="1 0" />
+            <CartesianGrid strokeDasharray="1 0" stroke={theme.chartGrid} />
             <XAxis
               dataKey="dt"
               ticks={dayTicks(data, timezone)}
               interval="preserveStartEnd"
               minTickGap={8}
               tickFormatter={(dt) => dateSubtitle(dt, timezone)}
+              stroke={theme.chartAxis}
+              tick={{ fill: theme.chartAxis }}
             />
-            <YAxis />
+            <YAxis stroke={theme.chartAxis} tick={{ fill: theme.chartAxis }} />
             <Tooltip
               labelFormatter={(dt) => dateAndHour(dt, timezone)}
               formatter={(value) => [`${value} °C`, "Temperatura"]}
+              contentStyle={{
+                backgroundColor: theme.tooltipBg,
+                borderColor: theme.tooltipBorder,
+                borderRadius: 8,
+              }}
+              labelStyle={{ color: theme.tooltipText }}
+              itemStyle={{ color: theme.chartLine }}
+              cursor={{ stroke: theme.chartGrid }}
             />
 
             <Line
               type="monotone"
               dataKey="temp"
-              stroke="#4d4494"
-              activeDot={{ r: 6 }}
+              stroke={theme.chartLine}
+              strokeWidth={2}
+              dot={{ r: 3, fill: theme.chartBg, stroke: theme.chartLine }}
+              activeDot={{ r: 6, fill: theme.chartLine, stroke: theme.chartBg }}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -94,7 +104,7 @@ const Container = styled.div`
     letter-spacing: 0em;
     text-align: left;
 
-    color: ${(props) => (props.$status === "light" ? "#000000" : "#FFFFFF")};
+    color: ${({ theme }) => theme.text};
   }
 `;
 
@@ -102,8 +112,11 @@ const Table = styled.div`
   width: 100%;
   max-width: 750px;
   height: 300px;
-  border: 1px solid #d8d8d8;
 
-  background-color: ${(props) =>
-    props.$status === "light" ? "#ffffff" : "#eeeded"};
+  border: 1px solid ${({ theme }) => theme.chartBorder};
+  border-radius: 12px;
+  overflow: hidden;
+
+  background-color: ${({ theme }) => theme.chartBg};
+  transition: background-color 0.3s, border-color 0.3s;
 `;

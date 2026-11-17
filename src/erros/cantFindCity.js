@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 const baseOptions = {
   title: "Erro!",
   confirmButtonText: "Ok",
-  confirmButtonColor: "#4d4494",
 };
 
 export function cantFindCity() {

@@ -21,7 +21,7 @@ export default function Forecast({ weather, forecast }) {
   }
 
   return (
-    <Container $status={changeColor}>
+    <Container>
       <button
         type="button"
         className="toggle"
@@ -74,9 +74,9 @@ const Container = styled.div`
 
   padding: 0px 30px 40px;
 
-  background-color: ${(props) =>
-    props.$status === "light" ? "#efefef" : "#070908"};
-  transition: background-color 0.3s;
+  background-color: ${({ theme }) => theme.pageBg};
+  color: ${({ theme }) => theme.text};
+  transition: background-color 0.3s, color 0.3s;
 
   .toggle {
     position: absolute;
@@ -90,22 +90,27 @@ const Container = styled.div`
     width: 80px;
     height: 35px;
 
-    background-color: ${(props) =>
-      props.$status === "light" ? "#000000" : "#ededfedf"};
+    background-color: ${({ theme }) => theme.toggleBg};
 
     border-radius: 15px;
-    border: 1px solid
-      ${(props) => (props.$status === "light" ? "#000000" : "#ededfedf")};
-    box-shadow: 0px 1px 2px 0px;
+    border: 1px solid ${({ theme }) => theme.toggleBorder};
+    box-shadow: 0px 1px 2px 0px ${({ theme }) => theme.shadow};
 
     cursor: pointer;
+    transition: background-color 0.3s, border-color 0.2s;
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      border-color: ${({ theme }) => theme.accent};
+    }
   }
 
   ion-icon {
     width: 20px;
     height: 20px;
 
-    color: ${(props) => (props.$status === "light" ? "#efefef" : "#000000e8")};
+    color: ${({ theme }) => theme.toggleIcon};
   }
 
   .city {
@@ -119,7 +124,6 @@ const Container = styled.div`
       line-height: 48px;
       letter-spacing: 0em;
       text-align: left;
-      color: ${(props) => (props.$status === "light" ? "#000000" : "#FFFFFF")};
     }
 
     h1 {

@@ -1,7 +1,5 @@
-import { useContext } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Context } from "../../Contex/Contex.jsx";
 
 const cities = [
   { id: 1, label: "SP", name: "Sao Paulo" },
@@ -11,16 +9,10 @@ const cities = [
 ];
 
 export default function CitiesExemple({ onSelectCity }) {
-  const { changeColor } = useContext(Context);
-
   return (
-    <Container $status={changeColor}>
+    <Container>
       {cities.map((ct) => (
-        <button
-          key={ct.id}
-          type="button"
-          onClick={() => onSelectCity(ct.name)}
-        >
+        <button key={ct.id} type="button" onClick={() => onSelectCity(ct.name)}>
           {ct.label}
         </button>
       ))}
@@ -52,15 +44,20 @@ const Container = styled.div`
     height: 40px;
 
     border-radius: 4px;
-    border: 1px solid
-      ${(props) => (props.$status === "light" ? "#ededef" : "#2a2a31")};
-    box-shadow: 0px 0px 8px 3px #314f7c14;
+    border: 1px solid ${({ theme }) => theme.surfaceBorder};
+    box-shadow: 0px 0px 8px 3px ${({ theme }) => theme.shadow};
 
-    background-color: ${(props) =>
-      props.$status === "light" ? "#ededef" : "#2a2a31"};
-    color: ${(props) => (props.$status === "light" ? "#000000" : "#ffffff")};
+    background-color: ${({ theme }) => theme.surface};
+    color: ${({ theme }) => theme.text};
 
     cursor: pointer;
+    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      border-color: ${({ theme }) => theme.accent};
+    }
   }
 
   @media (max-width: 480px) {

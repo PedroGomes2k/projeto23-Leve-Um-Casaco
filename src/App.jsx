@@ -5,6 +5,7 @@ import Forecast from "./Componentes/Forecast/index.jsx";
 import { ContexProvider } from "./Contex/Contex.jsx";
 import { fetchCityWeather } from "./Componentes/Weather/findCity.js";
 import { showRequestError } from "./erros/cantFindCity.js";
+import GlobalStyle from "./style/GlobalStyle.js";
 
 const INITIAL_CITY = "Manaus";
 
@@ -35,6 +36,7 @@ function App() {
 
   return (
     <ContexProvider>
+      <GlobalStyle />
       <Container>
         <Weather weather={weather} onSearch={searchCity} />
         <Forecast weather={weather} forecast={forecast} />

@@ -1,7 +1,5 @@
-import { useContext } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Context } from "../../Contex/Contex";
 import { formatNumber, formatTemp } from "../../utils/format.js";
 
 export default function Informations({
@@ -11,8 +9,6 @@ export default function Informations({
   wind,
   coat,
 }) {
-  const { changeColor } = useContext(Context);
-
   const cards = [
     { title: "Mínima", value: formatTemp(tempMin) },
     { title: "Máxima", value: formatTemp(tempMax) },
@@ -24,7 +20,7 @@ export default function Informations({
     <Container>
       <div className="containerCards">
         {cards.map((card) => (
-          <CardInformation key={card.title} $status={changeColor}>
+          <CardInformation key={card.title}>
             <h2>{card.title}</h2>
             <h1>{card.value}</h1>
           </CardInformation>
@@ -63,7 +59,7 @@ const Container = styled.div`
     letter-spacing: 0em;
     text-align: left;
 
-    color: #afadad;
+    color: ${({ theme }) => theme.textMuted};
   }
 `;
 
@@ -76,11 +72,9 @@ const CardInformation = styled.div`
   margin-top: 25px;
 
   border-radius: 20px;
-  background: ${(props) =>
-    props.$status === "light"
-      ? "linear-gradient(117.33deg, #4d4494 22.83%, #4f43ae 90.03%)"
-      : "linear-gradient(117.33deg, #696775 22.83%, #252529 90.03%)"};
-  color: #ffffff;
+  background: ${({ theme }) => theme.cardGradient};
+  box-shadow: 0px 8px 24px 0px ${({ theme }) => theme.shadow};
+  color: ${({ theme }) => theme.cardText};
 
   h1 {
     font-family: "Poppins", sans-serif;

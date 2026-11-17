@@ -14,7 +14,10 @@ export default function Weather({ weather, onSearch }) {
   const [searchCity, setSearchCity] = useState("");
   const { changeColor } = useContext(Context);
 
-  const infomationWeather = climateOfWeather(weather?.weather?.[0]?.main);
+  const infomationWeather = climateOfWeather(
+    weather?.weather?.[0]?.main,
+    changeColor
+  );
 
   function search(e) {
     e.preventDefault();
@@ -27,7 +30,7 @@ export default function Weather({ weather, onSearch }) {
   }
 
   return (
-    <Container $status={changeColor}>
+    <Container>
       <div className="title">
         <img src={coat} alt="Casaco azul" />
         <h1>Levo um casaquinho?</h1>
@@ -79,9 +82,8 @@ const Container = styled.div`
   width: 608px;
   padding-bottom: 40px;
 
-  background-color: ${(props) =>
-    props.$status === "light" ? "#FFFFFF" : "#16161a"};
-  color: ${(props) => (props.$status === "light" ? "#000000" : "#FFFFFF")};
+  background-color: ${({ theme }) => theme.panelBg};
+  color: ${({ theme }) => theme.text};
   transition: background-color 0.3s, color 0.3s;
 
   .title {
@@ -124,21 +126,21 @@ const Container = styled.div`
     height: 50px;
     padding-left: 25px;
 
-    background: ${(props) => (props.$status === "light" ? "#ededef" : "#2a2a31")};
-    color: ${(props) => (props.$status === "light" ? "#000000" : "#FFFFFF")};
+    background: ${({ theme }) => theme.surface};
+    color: ${({ theme }) => theme.text};
 
-    border: 1px solid
-      ${(props) => (props.$status === "light" ? "#ededef" : "#2a2a31")};
+    border: 1px solid ${({ theme }) => theme.surfaceBorder};
     border-radius: 24px;
-    box-shadow: 0px 24px 48px 0px #314f7c14;
+    box-shadow: 0px 24px 48px 0px ${({ theme }) => theme.shadow};
+    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
 
     &::placeholder {
-      color: ${(props) => (props.$status === "light" ? "#757575" : "#a0a0aa")};
+      color: ${({ theme }) => theme.placeholder};
     }
 
     &:focus {
       outline: none;
-      box-shadow: 0px 24px 48px 0px #314f7c14;
+      border-color: ${({ theme }) => theme.accent};
     }
   }
 
@@ -182,8 +184,7 @@ const Container = styled.div`
 
   .line {
     width: 70%;
-    border: 2px solid
-      ${(props) => (props.$status === "light" ? "#ededed" : "#2e2e35")};
+    border: 2px solid ${({ theme }) => theme.divider};
     border-radius: 8px;
 
     margin: 0px auto;
