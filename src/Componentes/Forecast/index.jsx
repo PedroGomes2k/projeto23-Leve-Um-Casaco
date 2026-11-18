@@ -3,15 +3,10 @@ import Informations from "./Informations.jsx";
 import TableOfTime from "./TableOfTime.jsx";
 import { useContext } from "react";
 import { Context } from "../../Contex/Contex.jsx";
+import { whatToTake } from "./whatToTake.js";
 
 export default function Forecast({ forecast, tableForecast }) {
   const { changeColor, setChangeColor } = useContext(Context);
-
-  function verifyIfUseCoat(tempActual) {
-    if (tempActual === undefined) return "";
-    if (tempActual <= 17) return "Você deve levar um casaquinho 🧥!";
-    if (tempActual > 17) return "Não, você não deve levar o casaquinho.";
-  }
 
   function changeColorSite() {
     if (changeColor === "dark") return setChangeColor("light");
@@ -51,7 +46,7 @@ export default function Forecast({ forecast, tableForecast }) {
           tempMax={forecast?.main.temp_max}
           humidity={forecast?.main.humidity}
           wind={forecast?.wind.speed}
-          coat={verifyIfUseCoat(forecast?.main.temp)}
+          tips={whatToTake(forecast, tableForecast)}
         />
 
         <TableOfTime
@@ -73,7 +68,7 @@ const Container = styled.div`
   flex-direction: column;
 
   background-color: ${(props) =>
-    props.$status === "light" ? "#efefef" : "#0f172a"};
+    props.$status === "light" ? "#eceef2" : "#0f172a"};
 
   .theme {
     width: 80px;

@@ -7,7 +7,7 @@ export default function Informations({
   tempMax,
   humidity,
   wind,
-  coat,
+  tips,
 }) {
   const { changeColor } = useContext(Context);
 
@@ -43,7 +43,16 @@ export default function Informations({
           <h1>{showValue(wind)}m/s</h1>
         </CardInformation>
       </div>
-      <p>{coat}</p>
+      {tips.length > 0 && (
+        <ul className="tips" aria-label="O que levar">
+          {tips.map((tip) => (
+            <li key={tip.text}>
+              <span aria-hidden="true">{tip.icon}</span>
+              {tip.text}
+            </li>
+          ))}
+        </ul>
+      )}
     </Container>
   );
 }
@@ -54,21 +63,34 @@ const Container = styled.div`
     gap: 0px 20px;
   }
 
-  p {
+  .tips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 24px 0px 12px;
+  }
+
+  li {
     display: flex;
     align-items: center;
-    min-height: 48px;
-    margin-top: 10px;
+    gap: 8px;
+    padding: 8px 16px 8px 12px;
 
     font-family: "Poppins", sans-serif;
-    font-size: 18px;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 28px;
-    letter-spacing: 0em;
-    text-align: left;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
 
-    color: ${(props) => (props.$status === "light" ? "#afadad" : "#94a3b8")};
+    border-radius: 20px;
+    border: 1px solid
+      ${(props) => (props.$status === "light" ? "#dfe2e8" : "#334155")};
+    background-color: ${(props) =>
+      props.$status === "light" ? "#f8f9fb" : "#1e293b"};
+    color: ${(props) => (props.$status === "light" ? "#1f2937" : "#f1f5f9")};
+
+    span {
+      font-size: 20px;
+    }
   }
 `;
 
