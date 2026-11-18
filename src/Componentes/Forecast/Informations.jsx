@@ -83,9 +83,9 @@ const Container = styled.div`
 
     border-radius: 20px;
     border: 1px solid
-      ${(props) => (props.$status === "light" ? "#dfe2e8" : "#334155")};
+      ${(props) => (props.$status === "light" ? "#e0ddf2" : "#334155")};
     background-color: ${(props) =>
-      props.$status === "light" ? "#f8f9fb" : "#1e293b"};
+      props.$status === "light" ? "#fbfaff" : "#1e293b"};
     color: ${(props) => (props.$status === "light" ? "#1f2937" : "#f1f5f9")};
 
     span {
