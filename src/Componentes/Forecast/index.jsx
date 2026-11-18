@@ -4,9 +4,14 @@ import TableOfTime from "./TableOfTime.jsx";
 import { useContext } from "react";
 import { Context } from "../../Contex/Contex.jsx";
 import { whatToTake } from "./whatToTake.js";
+import climateOfWeather from "../Weather/climateOfWeather.js";
 
 export default function Forecast({ forecast, tableForecast }) {
   const { changeColor, setChangeColor } = useContext(Context);
+  const { tone } = climateOfWeather(
+    forecast?.weather.map((w) => w.main),
+    changeColor
+  );
 
   function changeColorSite() {
     if (changeColor === "dark") return setChangeColor("light");
@@ -19,7 +24,7 @@ export default function Forecast({ forecast, tableForecast }) {
   }
 
   return (
-    <Container $status={changeColor}>
+    <Container $status={changeColor} $tone={tone}>
       <button
         className="theme"
         onClick={() => changeColorSite()}
@@ -59,6 +64,16 @@ export default function Forecast({ forecast, tableForecast }) {
   );
 }
 
+// tom lavanda que combina com o roxo do app, com um toque do tempo no topo
+function backgroundOfForecast(status, tone) {
+  const base = status === "light" ? "#eef0f7" : "#0f172a";
+  if (!tone) return base;
+
+  return `linear-gradient(180deg, ${tone}${
+    status === "light" ? "73" : "80"
+  } 0%, ${base} 55%) ${base}`;
+}
+
 const Container = styled.div`
   position: relative;
   width: 100%;
@@ -67,8 +82,7 @@ const Container = styled.div`
   flex: 1;
   flex-direction: column;
 
-  background-color: ${(props) =>
-    props.$status === "light" ? "#eceef2" : "#0f172a"};
+  background: ${(props) => backgroundOfForecast(props.$status, props.$tone)};
 
   .theme {
     width: 80px;
