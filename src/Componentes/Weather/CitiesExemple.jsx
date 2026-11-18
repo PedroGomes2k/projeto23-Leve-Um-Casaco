@@ -47,14 +47,14 @@ const Container = styled.div`
 
     border-radius: 4px;
     border: 1px solid
-      ${(props) => (props.$status === "light" ? "#ededef" : "#475569")};
+      ${(props) => (props.$status === "light" ? "#ffffffcc" : "#475569")};
     box-shadow: 0px 0px 8px 3px
       ${(props) => (props.$status === "light" ? "#314f7c14" : "#00000059")};
     justify-content: center;
     align-items: center;
 
     background-color: ${(props) =>
-      props.$status === "light" ? "#ededef" : "#334155"};
+      props.$status === "light" ? "#ffffffb3" : "#334155"};
     color: ${(props) => (props.$status === "light" ? "#000000" : "#f1f5f9")};
 
     cursor: pointer;

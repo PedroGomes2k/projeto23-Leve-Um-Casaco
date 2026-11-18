@@ -32,7 +32,7 @@ export default function Weather({ weather, setWeather, setTableForecast }) {
   }
 
   return (
-    <Container $status={changeColor}>
+    <Container $status={changeColor} $tone={infomationWeather.tone}>
       <div className="title">
         <img src={coat} alt="This is a photo of a coat blue" />
         <h1>Levo um casaquinho?</h1>
@@ -72,6 +72,14 @@ export default function Weather({ weather, setWeather, setTableForecast }) {
   );
 }
 
+// fundo com um tom claro de acordo com o tempo (sol, nublado, chuva...)
+function backgroundOfWeather(status, tone) {
+  const base = status === "light" ? "#f7f7f9" : "#1e293b";
+  if (!tone) return base;
+
+  return `linear-gradient(180deg, ${tone} 0%, ${base} 90%)`;
+}
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,8 +88,7 @@ const Container = styled.div`
   width: 608px;
   padding-bottom: 40px;
 
-  background-color: ${(props) =>
-    props.$status === "light" ? "#FFFFFF" : "#1e293b"};
+  background: ${(props) => backgroundOfWeather(props.$status, props.$tone)};
   color: ${(props) => (props.$status === "light" ? "#000000" : "#f1f5f9")};
 
   .title {
@@ -127,11 +134,11 @@ const Container = styled.div`
     padding-left: 25px;
 
     background: ${(props) =>
-      props.$status === "light" ? "#ededef" : "#334155"};
+      props.$status === "light" ? "#ffffffb3" : "#334155"};
     color: ${(props) => (props.$status === "light" ? "#000000" : "#f1f5f9")};
 
     border: 1px solid
-      ${(props) => (props.$status === "light" ? "#ededef" : "#475569")};
+      ${(props) => (props.$status === "light" ? "#ffffffcc" : "#475569")};
     border-radius: 24px;
     box-shadow: 0px 24px 48px 0px
       ${(props) => (props.$status === "light" ? "#314f7c14" : "#00000059")};
@@ -188,7 +195,7 @@ const Container = styled.div`
   .line {
     width: 70%;
     border: 2px solid
-      ${(props) => (props.$status === "light" ? "#ededed" : "#334155")};
+      ${(props) => (props.$status === "light" ? "#0000000f" : "#334155")};
     border-radius: 8px;
 
     margin: 0px auto;
