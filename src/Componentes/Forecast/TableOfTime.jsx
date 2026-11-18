@@ -83,7 +83,7 @@ export default function TableOfTime({ tableForecast, timezone, weather }) {
               formatter={tempFormater}
               labelFormatter={hourFormater}
               contentStyle={{
-                backgroundColor: colorOfTable("#f8f9fb", "#0f172a"),
+                backgroundColor: colorOfTable("#fbfaff", "#0f172a"),
                 borderColor: colorOfTable("#cccccc", "#475569"),
                 borderRadius: 8,
               }}
@@ -99,13 +99,13 @@ export default function TableOfTime({ tableForecast, timezone, weather }) {
               strokeWidth={2}
               dot={{
                 r: 3,
-                fill: colorOfTable("#f8f9fb", "#1e293b"),
+                fill: colorOfTable("#fbfaff", "#1e293b"),
                 stroke: colorOfTable("#4d4494", "#818cf8"),
               }}
               activeDot={{
                 r: 6,
                 fill: colorOfTable("#4d4494", "#818cf8"),
-                stroke: colorOfTable("#f8f9fb", "#1e293b"),
+                stroke: colorOfTable("#fbfaff", "#1e293b"),
               }}
             />
           </LineChart>
@@ -144,10 +144,10 @@ const Table = styled.div`
   height: 300px;
 
   border: 1px solid
-    ${(props) => (props.$status === "light" ? "#dfe2e8" : "#334155")};
+    ${(props) => (props.$status === "light" ? "#e0ddf2" : "#334155")};
   border-radius: 12px;
   overflow: hidden;
 
   background-color: ${(props) =>
-    props.$status === "light" ? "#f8f9fb" : "#1e293b"};
+    props.$status === "light" ? "#fbfaff" : "#1e293b"};
 `;
