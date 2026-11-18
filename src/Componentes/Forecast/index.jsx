@@ -25,7 +25,11 @@ export default function Forecast({ forecast, tableForecast }) {
 
   return (
     <Container $status={changeColor}>
-      <button onClick={() => changeColorSite()} aria-label="Trocar o tema">
+      <button
+        className="theme"
+        onClick={() => changeColorSite()}
+        aria-label="Trocar o tema"
+      >
         <ion-icon name={iconOfButton()}></ion-icon>
       </button>
       <div className="menu">
@@ -53,6 +57,7 @@ export default function Forecast({ forecast, tableForecast }) {
         <TableOfTime
           tableForecast={tableForecast}
           timezone={forecast?.timezone}
+          weather={forecast}
         />
       </div>
     </Container>
@@ -70,7 +75,7 @@ const Container = styled.div`
   background-color: ${(props) =>
     props.$status === "light" ? "#efefef" : "#0f172a"};
 
-  button {
+  .theme {
     width: 80px;
     height: 35px;
 
@@ -93,7 +98,7 @@ const Container = styled.div`
     cursor: pointer;
   }
 
-  ion-icon {
+  .theme ion-icon {
     width: 20px;
     height: 20px;
 
@@ -145,7 +150,7 @@ const Container = styled.div`
       padding: 0px 16px 40px;
     }
 
-    button {
+    .theme {
       right: 16px;
     }
 

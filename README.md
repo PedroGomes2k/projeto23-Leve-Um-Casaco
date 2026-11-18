@@ -11,6 +11,7 @@ Bem-vindo ao nosso projeto de previsão do tempo, onde você consegue verificar 
 - Tempo atual da cidade (temperatura, mínima, máxima, umidade e vento)
 - Atalhos para SP, DF, BH e RJ e busca por qualquer cidade
 - Gráfico com a previsão dos próximos 5 dias (de 3 em 3 horas, no horário local da cidade)
+- Botão "Chuva hora a hora": abre gráficos com a probabilidade de chuva (%) e os milímetros previstos para cada hora dos próximos 16 dias (até ~384 horas, via Open-Meteo), com atalhos de período (24h, 48h, 7 dias, 16 dias), seleção arrastável, resumo do período e visualização em tabela. Se a Open-Meteo estiver fora do ar, usa a previsão de 3 em 3 horas do OpenWeatherMap
 - Aviso se você deve levar um casaquinho (17 °C ou menos)
 - Modo claro e escuro
 
@@ -21,6 +22,7 @@ Bem-vindo ao nosso projeto de previsão do tempo, onde você consegue verificar 
 - Styled-Components
 - Recharts
 - OpenWeatherMap
+- Open-Meteo (previsão de chuva hora a hora, gratuita e sem chave)
 - SweetAlert2
 
 ## Como Rodar o Projeto

@@ -12,8 +12,9 @@ import {
 import { dateAndHour, dateSubtitle } from "./dateForTable";
 import { useContext } from "react";
 import { Context } from "../../Contex/Contex";
+import Rain from "../Rain/index.jsx";
 
-export default function TableOfTime({ tableForecast, timezone }) {
+export default function TableOfTime({ tableForecast, timezone, weather }) {
   const data = [];
   const daysOfTable = [];
 
@@ -45,7 +46,10 @@ export default function TableOfTime({ tableForecast, timezone }) {
 
   return (
     <Container $status={changeColor}>
-      <h1>Próximos dias</h1>
+      <div className="header">
+        <h1>Próximos dias</h1>
+        <Rain weather={weather} tableForecast={tableForecast} />
+      </div>
 
       <Table $status={changeColor}>
         <ResponsiveContainer width="100%" height={290}>
@@ -112,6 +116,16 @@ export default function TableOfTime({ tableForecast, timezone }) {
 }
 
 const Container = styled.div`
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 16px;
+    max-width: 750px;
+    margin-bottom: 8px;
+  }
+
   h1 {
     font-family: "Poppins", sans-serif;
     font-size: 23px;
